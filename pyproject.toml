@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "chat2api"
+version = "0.1.0"
+description = ""
+authors = ["wmymz <wmymz@icloud.com>"]
+readme = "README.md"
+packages = [{ include = "chat2api", from = "src" }]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<3.13"
+requests = "^2.31.0"
+fastapi = "^0.110.2"
+uvicorn = "^0.29.0"
+starlette = "^0.37.2"
+click = "^8.1.7"
+pydantic = "^2.7.1"
+typing-extensions = "^4.11.0"
+pydantic-core = "^2.18.2"
+annotated-types = "^0.6.0"
+h11 = "^0.14.0"
+pyinstaller = "^6.6.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+priority = "default"
