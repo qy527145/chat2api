@@ -5,6 +5,7 @@ from starlette.middleware.cors import CORSMiddleware
 from chat2api import Chat2API
 from chat2api.api import OpenaiAPI
 from chat2api.chat import AiProChat, AiPro
+from chat2api.util import now
 
 app = FastAPI()
 
@@ -17,9 +18,17 @@ app.add_middleware(
 )
 
 
-@app.get('v1/models')
+@app.get('/v1/models')
 def list_models():
-    return list(AiProChat.MODELS.keys())
+    return {
+        "object": "list",
+        "data": [{
+            "id": m,
+            "object": "model",
+            "created": now(),
+            "owned_by": AiProChat.MODELS[m].rsplit('/', 1)
+        } for m in AiProChat.MODELS]
+    }
 
 
 @app.options('/v1/chat/completions')
