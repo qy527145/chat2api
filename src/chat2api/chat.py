@@ -1,4 +1,3 @@
-import base64
 import json
 import os
 from abc import abstractmethod
@@ -68,7 +67,6 @@ class AiProChat(ChatServer):
             proxies = {'all': proxy}
         else:
             proxies = None
-        # proxies = {'all': 'http://127.0.0.1:10809'}
         resp = requests.post(url, json=req_json, headers=headers, proxies=proxies, stream=True)
         resp.raise_for_status()
         resp.encoding = 'utf-8'
@@ -96,18 +94,6 @@ class AiProChat(ChatServer):
         print()
 
 
-class ImgTest(ChatServer):
-
-    def answer_stream(self):
-        resp = requests.get('http://wmymz.2bit.cn/media/thumbs/076.jpg')
-        base_img = base64.b64encode(resp.content).decode()
-        # return f"<img src='data:img/png;base64,{base_img} />"
-        # return '这是图片：\n![asd](http://wmymz.2bit.cn/media/thumbs/076.jpg)'
-        # return f"这是图片：\n![asd][link]\n[link]:data:img/png;base64,{base_img}"
-        # return f"这是图片：\n![asd](data:img/png;base64,{base_img})"
-        return ['这是图片：\n', f"![asd](data:img/png;base64,{base_img})"]
-
-
 class AiProDraw(ChatServer):
     def __init__(self, client: OpenaiAPI):
         self.client = client
@@ -131,6 +117,7 @@ class AiProDraw(ChatServer):
             }
         )
         for base_img in resp.json()['data']['images']:
+            # todo 图床
             yield f"![asd](data:img/png;base64,{base_img})"
 
 

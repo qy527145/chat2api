@@ -5,7 +5,6 @@ from starlette.middleware.cors import CORSMiddleware
 from chat2api import Chat2API
 from chat2api.api import OpenaiAPI
 from chat2api.chat import AiProChat, AiPro
-from chat2api.util import LRUCache
 
 app = FastAPI()
 
@@ -37,6 +36,4 @@ async def chat(request: Request):
 
 
 if __name__ == '__main__':
-    find_chat_by_question = LRUCache(1000)
-    find_last_msg_in_chat = LRUCache(1000)
     uvicorn.run(app, host='0.0.0.0', port=5000)
