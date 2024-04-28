@@ -29,7 +29,6 @@ async def pre_chat():
 
 @app.post('/v1/chat/completions')
 async def chat(request: Request):
-    # 解析接收到的请求体为POST请求
     cli = OpenaiAPI()
     ser = AiPro(cli)
     return await Chat2API(cli, ser).response(request)
