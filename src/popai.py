@@ -119,8 +119,9 @@ class PopAi(ChatServer):
                 for info in infos:
                     # msg_id = info.get('messageId')
                     word = info.get('content')
-                    print(word, end='')
-                    yield word
+                    if word:
+                        print(word, end='')
+                        yield word
         print()
 
 
