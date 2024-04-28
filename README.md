@@ -3,9 +3,9 @@
 ## docker 启动
 
 ```bash
-docker run --name aipro --restart=always -d -p 8888:5000 wmymz/aipro`
+docker run --name aipro --restart=always -d -p 8888:5000 wmymz/aipro
 # ip被ban后需要配合http代理
-docker run --name aipro --restart=always -d -e PROXY=http://proxyip:port -p 8888:5000 wmymz/aipro`
+docker run --name aipro --restart=always -d -e PROXY=http://proxyip:port -p 8888:5000 wmymz/aipro
 ```
 
 ## docker compose
