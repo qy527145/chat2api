@@ -44,7 +44,3 @@ class LRUCache:
         if len(self.cache) > self.capacity:
             # 弹出字典开头的元素，即最久未访问的元素
             self.cache.popitem(last=False)
-
-
-FIND_CHAT_BY_QUESTION = LRUCache(1000)
-FIND_LAST_MSG_IN_CHAT = LRUCache(1000)

@@ -5,7 +5,7 @@ from typing import Iterable
 from fastapi import Request
 from starlette.responses import StreamingResponse
 
-from chat2api.util import now, FIND_CHAT_BY_QUESTION
+from chat2api.util import now
 
 
 class APIClient:
@@ -21,20 +21,15 @@ class APIClient:
 
 class OpenaiAPI(APIClient):
     def __init__(self):
-        self.context_id = None
+        self.messages = None
         self.question = None
         self.model = None
         self.stream = None
 
     async def parse_request(self, request: Request, *args, **kwargs):
         request_json = await request.json()
-        messages = request_json['messages']
-        if len(messages) > 2:
-            # 上下文
-            for msg in messages:
-                if msg['role'] == 'user':
-                    self.context_id = FIND_CHAT_BY_QUESTION.get(msg['content'])
-                    break
+        self.messages = request_json['messages']
+
         self.question = request_json['messages'][-1]['content']
         self.model = request_json['model']
         self.stream = request_json.get('stream')
