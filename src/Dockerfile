@@ -1,6 +1,6 @@
 FROM debian
 
-COPY ./dist/aipro /app
+COPY ./dist/popai /app
 
 EXPOSE 5000
 

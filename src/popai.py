@@ -27,6 +27,12 @@ class PopAi(ChatServer):
     def answer_stream(self):
         question = self.client.question
         model = PopAi.MODELS.get(self.client.model, 'GPT-4')
+
+        proxy = os.environ.get("PROXY")
+        if proxy:
+            proxies = {'all': proxy}
+        else:
+            proxies = None
         context_id = None
         if len(self.client.messages) > 2:
             # 上下文
@@ -35,12 +41,20 @@ class PopAi(ChatServer):
                     context_id = FIND_CHAT_BY_QUESTION.get(msg['content'])
                     if context_id:
                         break
+
         if context_id is None:
             channel_resp = requests.post(
                 'https://api.popai.pro/api/v1/chat/getChannel',
                 headers={'Authorization': self.authorization},
-                json={"model": model, "templateId": "", "message": question, "language": "English",
-                      "fileType": None})
+                json={
+                    "model": model,
+                    "templateId": "",
+                    "message": question,
+                    "language": "English",
+                    "fileType": None
+                },
+                proxies=proxies,
+            )
             channel_resp.raise_for_status()
             context_id = channel_resp.json()['data']['channelId']
 
@@ -88,11 +102,6 @@ class PopAi(ChatServer):
             "translateLanguage": None,
             "docPromptTemplateId": None
         }
-        proxy = os.environ.get("PROXY")
-        if proxy:
-            proxies = {'all': proxy}
-        else:
-            proxies = None
         resp = requests.post(url, json=req_json, headers=headers, proxies=proxies, stream=True)
         resp.raise_for_status()
         resp.encoding = 'utf-8'
