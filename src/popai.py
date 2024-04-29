@@ -88,7 +88,7 @@ class PopAi(ChatServer):
             "language": "zh-CN",
             "channelId": context_id,
             "message": question,
-            "model": PopAi.MODELS.get(model, 'GPT-4'),
+            "model": model,
             "messageIds": [],
             "improveId": None,
             "richMessageId": None,
