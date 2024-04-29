@@ -127,6 +127,7 @@ class AiProDraw(ChatServer):
                 'surfToken': '51dc3d9891224881'
             }
         )
+        resp.raise_for_status()
         for base_img in resp.json()['data']['images']:
             # todo 图床
             yield f"![asd](data:img/png;base64,{base_img})"
