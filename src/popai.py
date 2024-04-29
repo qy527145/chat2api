@@ -8,7 +8,7 @@ from starlette.middleware.cors import CORSMiddleware
 
 from chat2api import ChatServer, Chat2API
 from chat2api.api import OpenaiAPI
-from chat2api.util import now, LRUCache
+from chat2api.util import now, LRUCache, is_summary
 
 
 class PopAi(ChatServer):
@@ -26,15 +26,17 @@ class PopAi(ChatServer):
 
     def answer_stream(self):
         question = self.client.question
-        model = PopAi.MODELS.get(self.client.model, 'GPT-4')
-
+        if is_summary(question):
+            model = PopAi.MODELS['gpt-3.5']
+        else:
+            model = PopAi.MODELS.get(self.client.model, 'GPT-4')
         proxy = os.environ.get("PROXY")
         if proxy:
             proxies = {'all': proxy}
         else:
             proxies = None
         context_id = None
-        if len(self.client.messages) > 2:
+        if len(self.client.messages) > 2 and not is_summary(question):
             # 上下文
             for msg in self.client.messages:
                 if msg['role'] == 'user':

@@ -3,6 +3,14 @@ import time
 from collections import OrderedDict
 
 
+def is_summary(text: str) -> bool:
+    if '请总结上述对话为10个字以内的标题，不需要包含标点符号' in text:
+        return True
+    if '使用四到五个字直接返回这句话的简要主题' in text:
+        return True
+    return False
+
+
 def now():
     return int(time.time())
 
