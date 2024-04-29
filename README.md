@@ -3,9 +3,9 @@
 ## docker 启动
 
 ```bash
-docker run --name popai --restart=always -d -p 8888:5000 -e AUTHORIZATION=<AUTHORIZATION> -e GTOKEN=<GTOKEN> wmymz/popai
+docker run --name popai --restart=always -d -p 8888:5000 -e AUTHORIZATION=<AUTHORIZATION> -e GTOKEN=<GTOKEN> wmymz/chat2api popai.py
 # ip被ban后需要配合http代理
-docker run --name popai --restart=always -d -p 8888:5000 -e AUTHORIZATION=<AUTHORIZATION> -e GTOKEN=<GTOKEN> -e PROXY=http://proxyip:port wmymz/popai
+docker run --name popai --restart=always -d -p 8888:5000 -e PYTHONUNBUFFERED=1 -e AUTHORIZATION=<AUTHORIZATION> -e GTOKEN=<GTOKEN> -e PROXY=http://proxyip:port wmymz/chat2api popai.py
 
 ```
 
@@ -14,11 +14,14 @@ docker run --name popai --restart=always -d -p 8888:5000 -e AUTHORIZATION=<AUTHO
 ```yaml
 services:
   aipro:
-    image: wmymz/popai:latest
+    image: wmymz/chat2api:latest
+    # command: aipro.py
+    command: popai.py
     restart: always
     ports:
       - "8888:5000"
     environment:
+      PYTHONUNBUFFERED: 1
       PROXY: "http://proxyip:port"
       AUTHORIZATION: "<AUTHORIZATION>"
       GTOKEN: "<GTOKEN>"
@@ -37,16 +40,7 @@ services:
 ## 打包docker镜像
 
 ```bash
-# 虚拟环境
-python3 -m venv venv
-source venv/bin/activate
-python install -r requirements.txt
-
-# 打包单文件可执行程序（以popai为例）
-cd src
-pyinstaller -F popai.py -n popai
-
 # 构建镜像，上传Docker hub
-docker build -t wmymz/popai .
-docker push wmymz/popai
+docker build --no-cache -t wmymz/chat2api .
+docker push wmymz/chat2api
 ```

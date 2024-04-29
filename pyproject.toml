@@ -18,7 +18,6 @@ typing-extensions = "^4.11.0"
 pydantic-core = "^2.18.2"
 annotated-types = "^0.6.0"
 h11 = "^0.14.0"
-pyinstaller = "^6.6.0"
 
 
 [build-system]

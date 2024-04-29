@@ -125,7 +125,7 @@ class PopAi(ChatServer):
         print()
 
 
-app = FastAPI()
+app = FastAPI(title="PopAi Chat", description="PopAi Chat")
 
 app.add_middleware(
     CORSMiddleware,
