@@ -105,8 +105,14 @@ class AiProDraw(ChatServer):
 
     def answer_stream(self):
         yield "这是图片：\n"
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0',
+            'Origin': 'https://chatpro.ai-pro.org',
+            'Referer': 'https://chatpro.ai-pro.org/chat/new',
+        }
         resp = requests.post(
             'https://app.ai-pro.org/api/aipsd/v2/dream-photo-create',
+            headers=headers,
             data={
                 'payload': json.dumps(
                     {
