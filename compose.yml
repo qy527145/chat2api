@@ -1,0 +1,11 @@
+services:
+  jls:
+    image: wmymz/jls
+    restart: always
+    volumes:
+      - /root/jls/data:/data
+    environment:
+      EXPIRE_DATE: "2099-12-31"
+      NAME: "crack"
+    ports:
+      - "127.0.0.1:5000:5000"
