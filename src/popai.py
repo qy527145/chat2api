@@ -166,7 +166,8 @@ async def chat(request: Request):
 if __name__ == '__main__':
     AUTHORIZATION = os.environ.get('AUTHORIZATION')
     GTOKEN = os.environ.get('GTOKEN')
-    assert not AUTHORIZATION or GTOKEN, 'AUTHORIZATION and GTOKEN must be set'
+    assert AUTHORIZATION, 'AUTHORIZATION must be set'
+    assert GTOKEN, 'GTOKEN must be set'
     FIND_CHAT_BY_QUESTION = LRUCache(1000)
 
     uvicorn.run(app, host='0.0.0.0', port=5000)

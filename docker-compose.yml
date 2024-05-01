@@ -1,0 +1,19 @@
+services:
+  chat2api:
+    image: wmymz/chat2api:latest
+    build: .
+  aipro:
+    image: wmymz/aipro:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.aipro
+  popai:
+    image: wmymz/popai:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.popai
+  wrtnai:
+    image: wmymz/wrtnai:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.wrtnai

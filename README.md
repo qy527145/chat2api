@@ -3,9 +3,15 @@
 ## docker 启动
 
 ```bash
+
 docker run --name popai --restart=always -d -p 8888:5000 -e AUTHORIZATION=<AUTHORIZATION> -e GTOKEN=<GTOKEN> wmymz/chat2api popai.py
-# ip被ban后需要配合http代理
-docker run --name popai --restart=always -d -p 8888:5000 -e PYTHONUNBUFFERED=1 -e AUTHORIZATION=<AUTHORIZATION> -e GTOKEN=<GTOKEN> -e PROXY=http://proxyip:port wmymz/chat2api popai.py
+
+#aipro
+docker run --name aipro --restart=always -d -p 8881:5000 -e PYTHONUNBUFFERED=1 -e PROXY=http://proxyip:port wmymz/aipro
+# popai
+docker run --name popai --restart=always -d -p 8882:5000 -e PYTHONUNBUFFERED=1 -e PROXY=http://proxyip:port -e AUTHORIZATION=<AUTHORIZATION> -e GTOKEN=<GTOKEN> wmymz/popai
+# wrtnai
+docker run --name wrtnai --restart=always -d -p 8883:5000 -e PYTHONUNBUFFERED=1 -e PROXY=http://proxyip:port -e REFRESH_TOKEN=<REFRESH_TOKEN> wmymz/wrtnai
 
 ```
 
@@ -15,16 +21,34 @@ docker run --name popai --restart=always -d -p 8888:5000 -e PYTHONUNBUFFERED=1 -
 services:
   aipro:
     image: wmymz/chat2api:latest
-    # command: aipro.py
     command: popai.py
     restart: always
     ports:
-      - "8888:5000"
+      - "8881:5000"
+    environment:
+      PYTHONUNBUFFERED: 1
+      PROXY: "http://proxyip:port"
+  popai:
+    image: wmymz/chat2api:latest
+    command: popai.py
+    restart: always
+    ports:
+      - "8882:5000"
     environment:
       PYTHONUNBUFFERED: 1
       PROXY: "http://proxyip:port"
       AUTHORIZATION: "<AUTHORIZATION>"
       GTOKEN: "<GTOKEN>"
+  wrtnai:
+    image: wmymz/chat2api:latest
+    command: wrtnai.py
+    restart: always
+    ports:
+      - "8883:5000"
+    environment:
+      PYTHONUNBUFFERED: 1
+      PROXY: "http://proxyip:port"
+      REFRESH_TOKEN: "<REFRESH_TOKEN>"
 ```
 
 # 开发手册
@@ -41,6 +65,6 @@ services:
 
 ```bash
 # 构建镜像，上传Docker hub
-docker build --no-cache -t wmymz/chat2api .
-docker push wmymz/chat2api
+docker compose build --no-cache
+docker compose push 
 ```

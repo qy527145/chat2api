@@ -122,7 +122,7 @@ class WrtnAi(ChatServer):
         self.session_arg = resp.json()['data']['_id']
         return self.session_arg
 
-    def get_message_arg(self, question, model='gpt-4'):
+    def get_message_arg(self, question, model):
         url = f'https://william.wow.wrtn.ai/chat/v3/{self.get_session_arg()}/start?platform=web&user={self.user_email}&model={model}'
         headers = {
             'Authorization': 'Bearer {}'.format(self.get_access_token()),
